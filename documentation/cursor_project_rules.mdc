@@ -1,0 +1,86 @@
+---
+description: Apply these rules when creating the project
+globs:
+alwaysApply: true
+---
+## Project Overview
+
+*   **Type:** cursor_project_rules
+*   **Description:** A straightforward Chrome extension designed to streamline the process of sending the current web page's URL and basic metadata (date, time, and device information) to a pre-configured webhook. The extension supports multiple simultaneous instances in a single browser, with each instance represented by a custom uploaded icon and a unique webhook configuration.
+*   **Primary Goal:** Enable seamless capture and transmission of web page metadata via a user-friendly Chrome extension that supports independent configurations for multiple instances.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+*   **Directory Rules:**
+
+    *   **[manifest_v3]**: Enforce the use of Manifest V3 for defining the extension structure. This includes using a service worker for background tasks and clearly separated pages for options and popup interactions.
+    *   Example 1: "Background Script" → `src/background/background.js` which functions as the Manifest V3 service worker handling background tasks.
+    *   Example 2: "Options Page" → `src/options/options.html` and `src/options/options.js` following a simple UI configuration pattern.
+    *   Example 3: "Popup/Action Page" → `src/popup/popup.html` and `src/popup/popup.js` to handle user interactions and display temporary visual feedback.
+
+### Core Directories
+
+*   **Versioned Structure:**
+
+    *   **[src]**: Contains all extension source code, segregated into modules corresponding to their roles.
+    *   Example 1: `src/background` → Manifests the service worker for handling background operations under Manifest V3.
+    *   Example 2: `src/options` → Houses files related to the configuration options page for setting the webhook URL and uploading custom icons.
+    *   Example 3: `src/popup` → Manages the popup interface that triggers metadata capture and displays success or failure badges.
+
+### Key Files
+
+*   **Stack-Versioned Patterns:**
+
+    *   **[manifest.json]**: Core configuration file for the Chrome extension, enforcing Manifest V3 rules and minimal permissions (URL and local storage access).
+    *   Example 1: `src/background/background.js` → Implements the service worker logic to capture the web page metadata and handle the automatic retry mechanism.
+    *   Example 2: `src/options/options.html` → Provides the settings interface for uploading custom icons and configuring the webhook URL.
+    *   Example 3: `src/popup/popup.html` → Displays visual feedback (temporary badge) confirming success or indicating failure upon sending data.
+
+## Tech Stack Rules
+
+*   **Version Enforcement:**
+
+    *   **vanilla_javascript**: Use modern ES6+ features, maintain modular code structure, and ensure clean separation of concerns.
+    *   **manifest_v3**: Must strictly adhere to Chrome's Manifest V3 guidelines, using a service worker for background logic and enforcing minimal permission requests.
+    *   **local_storage**: Utilize local storage to save and retrieve instance-specific configurations; ensure data validation and error handling are in place.
+
+## PRD Compliance
+
+*   **Non-Negotiable:**
+
+    *   "Each instance of the extension is designed to operate independently with its own unique icon and webhook configuration." : Enforce a one-to-one mapping between a custom icon and its corresponding webhook URL, ensuring that configurations remain isolated and are stored securely in local storage.
+
+## App Flow Integration
+
+*   **Stack-Aligned Flow:**
+
+    *   Example: "Extension Activation Flow" → When a user clicks the extension icon (each instance represented by its custom icon), the popup (or badge) triggers the capture of the current URL and associated metadata, then invokes the background service worker to send this data to the configured webhook. On success, a green checkmark badge is displayed for 10 seconds; on failure, a red X is shown after up to three retry attempts.
+
+## Best Practices
+
+*   **vanilla_javascript**
+
+    *   Use modular JS architecture to maintain readability and manageability.
+    *   Avoid polluting the global scope by leveraging closures and modules.
+    *   Follow modern coding standards and use ES6+ syntax for improved maintainability.
+
+*   **manifest_v3**
+
+    *   Always implement background logic using a service worker for efficiency and compliance with Chrome's guidelines.
+    *   Keep the permissions minimal (only URL and storage access) to enhance security.
+    *   Adhere to lifecycle events of service workers to manage resource allocation and ensure consistent performance.
+
+*   **local_storage**
+
+    *   Validate configuration data before saving to prevent corrupt or invalid entries.
+    *   Implement error handling and fallback strategies to deal with potential storage access issues.
+    *   Ensure that each instance's data is isolated to prevent cross-instance configuration conflicts.
+
+## Rules
+
+*   Derive folder/file patterns **directly** from techStackDoc versions.
+*   For Manifest V3: Enforce a strict structure with a dedicated `src/background` for service workers, and separate `src/options` and `src/popup` directories for options and popup pages respectively.
+*   Never mix version patterns (e.g., do not use background pages meant for Manifest V2 when using Manifest V3).
+*   Maintain clear segregation of configuration for each extension instance, ensuring that each custom icon and webhook URL pair operates independently.

@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Web Page Metadata Sender",
+  "version": "1.0",
+  "description": "Send the current web page's URL and metadata to a configured webhook",
+  "permissions": ["storage", "activeTab", "notifications"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/default_icon16.png",
+      "48": "icons/default_icon48.png",
+      "128": "icons/default_icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_page": "options/options.html",
+  "icons": {
+    "16": "icons/default_icon16.png",
+    "48": "icons/default_icon48.png",
+    "128": "icons/default_icon128.png"
+  }
+} 
